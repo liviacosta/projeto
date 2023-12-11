@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+<link rel="stylesheet" th:href="@{/css/style.css}">
+
+  <title>Cadastro de Projetos</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/projetos/list">Listar Projetos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Membros do Projeto</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pessoas/list">Listar Pessoas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/pessoas/create">Nova Pessoa</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <form th:method="GET" th:action="@{'/projetos/{id}/membros/create'(id=${projeto.id})}" th:object="${projeto}">
+    <section>
+      <div class="container">
+        <div class="flex row mb-3">
+          <div class="col-6">
+            <label for="inputNomeProjeto" class="form-label">Nome do Projeto</label>
+            <input type="text" class="form-control" name="nome" th:value="${projeto.nome}" disabled>
+          </div>
+          <div class="col-6">
+            <label for="nomeGerente" class="form-label">Gerente Responsável</label>
+            <input type="text" class="form-control" id="nomeGerente" name="nomeGerente" th:value="${projeto.nomeGerente}" disabled>
+          </div>
+        </div>
+        <div class="flex row mb-3">
+          <div class="col-6">
+            <label for="inputStatus" class="form-label">Status</label>
+            <input type="text" class="form-control" id="status" name="status" th:value="${projeto.status}" disabled>
+          </div>
+          <div class="col-6">
+            <label for="dropDownRisco" class="form-label">Risco</label>
+            <input type="text" class="form-control" id="risco" name="risco" th:value="${projeto.risco}" disabled>
+          </div>
+        </div>
+        <div class="flex row mb-3">
+          <div>
+            <label for="inputDescricao" class="form-label">Descrição</label>
+            <input type="text" class="form-control" name="descricao" th:value="${projeto.descricao}" disabled>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <label for="membros" class="form-label">Membros</label>
+        <table class="table" id="membros">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nome da Pessoa</th>
+              <th scope="col">Data de Nascimento</th>
+              <th scope="col">Cpf</th>
+              <th scope="col">É Funcionário?</th>
+              <th scope="col">É Gerente?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-th-each="pessoa : ${membros}" th:if="${not #lists.isEmpty(membros)}">
+              <td data-th-text="${pessoa.id}"></td>
+              <td data-th-text="${pessoa.nome}"></td>
+              <td data-th-text="${pessoa.nome}"></td>
+              <td data-th-text="${{pessoa.cpf}}"></td>
+              <td data-th-text="${pessoa.isFuncionario} ? 'Sim' : 'Não'"></td>
+              <td data-th-text="${pessoa.isGerente} ? 'Sim' : 'Não'"></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(membros)}">
+              <td colspan="6">
+                <span>Projeto não tem Membros!</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div class="flex row mb-3">
+          <div class="col-6 justify-content-end">
+            <button type="submit" class="btn btn-primary">Add Membro</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </form>
+</body>
+</html>
